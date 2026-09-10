@@ -45,7 +45,12 @@ const pretty = /^\+380\d{9}$/.test(primary) ? primary.replace(/^(\+380)(\d{2})(\
 const telegramName = (c.TELEGRAM || '').trim().replace(/^@/, '');
 assert(!telegramName || /^[a-zA-Z0-9_]{5,32}$/.test(telegramName), 'Telegram: username без посилання або порожнє поле');
 const email = (c.EMAIL || '').trim(); assert(!email || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email), 'Некоректний email');
-const links = { PHONE: 'tel:' + primary, VIBER: 'viber://chat?number=' + encodeURIComponent(phone(c.VIBER || primary, 'Viber')), TELEGRAM: 'https://t.me/' + (telegramName || primary), ROUTE: 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(m.LAT + ',' + m.LNG) + '&travelmode=driving' };
+const links = {
+  PHONE: 'tel:' + primary,
+  VIBER: 'viber://chat?number=' + encodeURIComponent(phone(c.VIBER || primary, 'Viber')),
+  TELEGRAM: telegramName ? 'https://t.me/' + telegramName : 'tg://resolve?phone=' + primary.replace(/\D/g, ''),
+  ROUTE: 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(m.LAT + ',' + m.LNG) + '&travelmode=driving'
+};
 const gallery = photos.GALLERY.map(x => ({ src: image(x.src), alt: (x.alt || x.caption || 'Фотографія території').trim(), caption: x.caption || x.alt || '' }));
 const images = Object.fromEntries(['HERO','HOUSE','WATER'].map(k => [k, image(photos[k])]));
 const C = { NAME:g.NAME, PHONE:primary, VIBER:c.VIBER || '', TELEGRAM:telegramName, EMAIL:email, PRICE:p, LOCATION:g.LOCATION, WATER:g.WATER, TEXT:{ HERO_LINE_1:g.HERO_LINE_1, HERO_LINE_2:g.HERO_LINE_2, HERO_DESCRIPTION:g.HERO_DESCRIPTION, HOUSE_DESCRIPTION:h.DESCRIPTION }, HOUSE:h, MAP:{...m, DIRECTIONS_URL:links.ROUTE}, IMAGES:images, GALLERY:gallery };
@@ -67,7 +72,28 @@ const raw = {
   EMAIL_ATTRS:email ? ' href="mailto:' + escape(email) + '"' : ' hidden', TELEGRAM_NOTE_HIDDEN:telegramName ? ' hidden' : '',
   GALLERY_HTML:gallery.slice(0,5).map(x => '<button class="gallery-item" aria-label="Відкрити фото: ' + escape(x.caption || x.alt) + '"><img src="' + escape(x.src) + '" alt="' + escape(x.alt) + '" loading="lazy" decoding="async"><span>' + escape(x.caption || x.alt) + '</span></button>').join('')
 };
-const html = read('src/index.template.html').replace(/\{\{([A-Z_0-9]+)\}\}/g, (_, key) => { assert(key in tokens || key in raw, 'Невідоме поле шаблону: ' + key); return key in raw ? raw[key] : escape(tokens[key]); });
+let html = read('src/index.template.html').replace(/\{\{([A-Z_0-9]+)\}\}/g, (_, key) => { assert(key in tokens || key in raw, 'Невідоме поле шаблону: ' + key); return key in raw ? raw[key] : escape(tokens[key]); });
+
+// Make the difficult final approach explicit without changing the overall section layout.
+html = html.replace(
+  '<div class="route-instructions"',
+  '<p class="price-note route-alert" role="note"><strong>Важливо:</strong> під’їзд до місця може бути неочевидним — радимо будувати маршрут саме до цієї точки.</p><div class="route-instructions"'
+);
+
+// Social preview for links shared in Telegram, Viber and other messengers.
+const canonical = process.env.URL || '';
+const ogImage = canonical ? new URL(images.HERO, canonical.endsWith('/') ? canonical : canonical + '/').href : images.HERO;
+const socialMeta = [
+  '<meta property="og:image" content="' + escape(ogImage) + '">',
+  '<meta property="og:image:alt" content="' + escape(photos.HERO_ALT) + '">',
+  ...(canonical ? ['<meta property="og:url" content="' + escape(canonical) + '">'] : []),
+  '<meta name="twitter:card" content="summary_large_image">',
+  '<meta name="twitter:title" content="' + escape(tokens.PAGE_TITLE) + '">',
+  '<meta name="twitter:description" content="' + escape(tokens.META_DESCRIPTION) + '">',
+  '<meta name="twitter:image" content="' + escape(ogImage) + '">'
+].join('\n  ');
+html = html.replace('</head>', '  ' + socialMeta + '\n</head>');
+
 write('dist/index.html', html);
 write('dist/config.js', '// Generated from content/site.json. Edit through /admin.\nwindow.SITE_CONFIG = ' + JSON.stringify(C, null, 2).replace(/</g, '\\u003c') + ';\n');
 
@@ -75,7 +101,6 @@ write('dist/config.js', '// Generated from content/site.json. Edit through /admi
 const repositoryURL = process.env.CMS_REPOSITORY || process.env.REPOSITORY_URL || '';
 const repo = repositoryURL.replace(/^git@github\.com:/, '').replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '').replace(/\/$/, '');
 const connected = /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo);
-const canonical = process.env.URL || '';
 const schema = JSON.parse(read('cms/schema.json'));
 const config = { ...schema, backend: { name:'github', repo:connected ? repo : 'SETUP_REQUIRED', branch:process.env.CMS_BRANCH || process.env.BRANCH || 'main', base_url:'https://api.netlify.com', auth_endpoint:'auth', ...(canonical ? {site_domain:new URL(canonical).hostname} : {}) }, ...(canonical ? {site_url:canonical, display_url:canonical} : {}) };
 write('dist/admin/config.yml', JSON.stringify(config, null, 2) + '\n');
