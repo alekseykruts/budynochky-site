@@ -47,3 +47,8 @@
   font-display: swap;
   src: url(fonts/font-6.ttf) format('truetype');
 }
+
+/* Use the clean sans-serif for the large contact phone number. */
+.big-phone {
+  font-family: 'Manrope', Arial, sans-serif !important;
+}
