@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Керування сайтом — Будиночки біля води</title>
+  <link rel="icon" href="../favicon.svg">
+  <link rel="stylesheet" href="../fonts.css">
+  <link rel="stylesheet" href="admin.css">
+  <script>window.CMS_MANUAL_INIT = true;</script>
+  <script src="admin.js" defer></script>
+</head>
+<body>
+  <main class="admin-shell" id="setup">
+    <header class="admin-top"><a class="admin-brand" href="../">Будиночки <em>біля води</em></a><a class="back-link" href="../">Відкрити сайт ↗</a></header>
+    <div class="admin-intro"><p class="eyebrow">КЕРУВАННЯ САЙТОМ</p><h1>Усе важливе.<br><em>В одному місці.</em></h1><p>Тексти, ціни, фотографії та маршрут — без редагування коду.</p></div>
+    <section class="connection-panel" aria-labelledby="connection-title">
+      <p class="status" id="status" role="status">Перевіряємо підключення…</p>
+      <h2 id="connection-title">Вхід до редактора</h2>
+      <p id="connection-description">Редактор зберігає зміни у GitHub. Після публікації Netlify автоматично оновлює сайт для всіх відвідувачів.</p>
+      <button class="admin-button" id="login" hidden>Увійти через GitHub <span>↗</span></button>
+      <p id="connection-error" class="error" role="alert" hidden></p>
+      <noscript><p>Увімкніть JavaScript, щоб відкрити редактор.</p></noscript>
+    </section>
+    <div class="admin-sections" aria-label="Розділи редактора"><div><span>01</span><h3>Основна інформація</h3><p>Назва, перший екран, населений пункт і водойма.</p></div><div><span>02</span><h3>Контакти</h3><p>Один номер для всього сайту. Viber, Telegram та email.</p></div><div><span>03</span><h3>Ціни</h3><p>Будні, вихідні, мінімум ночей і примітка.</p></div><div><span>04</span><h3>Будиночки й умови</h3><p>Місця, зручності та списки зі зміною порядку.</p></div><div><span>05</span><h3>Як дістатися</h3><p>Точка на карті, маршрут і детальна інструкція.</p></div><div><span>06</span><h3>Фотографії</h3><p>Завантаження, заміна, підписи, порядок і вибір Hero.</p></div></div>
+    <details class="setup-guide" id="setup-guide"><summary>Одноразове підключення GitHub та Netlify <span>+</span></summary><ol><li>Завантажте вміст підготовленого архіву в новий репозиторій GitHub. Файл <code>netlify.toml</code> має бути в корені репозиторію.</li><li>У Netlify оберіть <strong>Add new project → Import an existing project → GitHub</strong>, виберіть репозиторій і натисніть Deploy. Налаштування підхопляться автоматично.</li><li>У <a href="https://github.com/settings/applications/new" target="_blank" rel="noopener noreferrer">GitHub створіть OAuth App</a>: назва — назва сайту; Homepage URL — отримана адреса Netlify; Authorization callback URL — <code>https://api.netlify.com/auth/done</code>.</li><li>У Netlify відкрийте <strong>Project configuration → Access &amp; security → OAuth → Install Provider → GitHub</strong>. Внесіть Client ID та Client Secret із GitHub. Секрет вводиться лише у Netlify.</li><li>Відкрийте <strong>ваш-домен/admin/</strong>, увійдіть у GitHub і відкрийте <strong>Керування сайтом → Вміст сайту</strong>. Змініть поле та натисніть <strong>Publish</strong>. Дочекайтеся успішного оновлення у Netlify.</li></ol><p>Право редагування мають лише користувачі з доступом на запис до вашого репозиторію. Деталі: <a href="https://docs.netlify.com/manage/security/secure-access-to-sites/oauth-provider-tokens/" target="_blank" rel="noopener noreferrer">інструкція Netlify</a>.</p></details>
+    <footer>Decap CMS · Зміни зберігаються у вашому репозиторії</footer>
+  </main>
+</body>
+</html>

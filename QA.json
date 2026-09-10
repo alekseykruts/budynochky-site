@@ -1,0 +1,25 @@
+{
+  "local_asset_errors": [],
+  "html_language": [
+    "uk"
+  ],
+  "h1_count": 1,
+  "empty_email_hidden": true,
+  "photos": 13,
+  "browser_qa": "Not completed. Preview navigation was rejected by browser URL policy earlier in this task. No workaround attempted.",
+  "visual_revision": 2,
+  "css_parse": "passed",
+  "javascript_syntax": "passed",
+  "motion": "reduced-motion support; reveals with IntersectionObserver; optional desktop parallax",
+  "revision": 3,
+  "centralized_content_build_tests": "passed",
+  "cms_field_mapping": "passed",
+  "map_immediately_after_hero": true,
+  "contact_links_consistent": true,
+  "cms_remote_login_and_publish": "Not tested: GitHub repository, Netlify site and OAuth provider must be connected by the owner.",
+  "photo_upload_test": "Build integration tested with a copied fixture photo; real CMS media upload awaits authentication.",
+  "responsive_qa": "CSS reviewed for 360/390/412/768/1440 widths, safe area and content padding; no browser rendering or interaction verification.",
+  "existing_photos": "All 13 unchanged from previously verified originals",
+  "homepage_new_runtime_dependencies": 0,
+  "admin_dependency": "Decap CMS 3.16.1, loaded only on admin login"
+}

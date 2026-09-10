@@ -1,0 +1,12 @@
+{
+  "name": "budynochky-bilia-vody",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dist --host 0.0.0.0",
+    "build": "node scripts/build-content.mjs"
+  },
+  "devDependencies": {
+    "vite": "7.1.3"
+  }
+}

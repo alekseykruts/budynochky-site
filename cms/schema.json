@@ -1,0 +1,415 @@
+{
+  "locale": "uk",
+  "publish_mode": "simple",
+  "media_folder": "dist/images",
+  "public_folder": "/images",
+  "logo_url": "/favicon.svg",
+  "media_processing": {
+    "enabled": true,
+    "quality": 85,
+    "strip_metadata": true,
+    "width": 1800
+  },
+  "editor": {
+    "preview": false
+  },
+  "show_preview_links": false,
+  "collections": [
+    {
+      "name": "site",
+      "label": "Керування сайтом",
+      "description": "Відкрийте «Вміст сайту», розгорніть потрібний розділ та натисніть Publish. Зміни зберігаються у GitHub; Netlify оновить публічний сайт після успішної збірки.",
+      "files": [
+        {
+          "name": "content",
+          "label": "Вміст сайту",
+          "file": "content/site.json",
+          "format": "json",
+          "fields": [
+            {
+              "name": "GENERAL",
+              "label": "01 · Основна інформація",
+              "widget": "object",
+              "collapsed": true,
+              "fields": [
+                {
+                  "name": "NAME",
+                  "label": "Назва об’єкта",
+                  "widget": "string"
+                },
+                {
+                  "name": "HERO_LINE_1",
+                  "label": "Головний заголовок",
+                  "widget": "string"
+                },
+                {
+                  "name": "HERO_LINE_2",
+                  "label": "Підзаголовок",
+                  "widget": "string"
+                },
+                {
+                  "name": "HERO_DESCRIPTION",
+                  "label": "Короткий опис",
+                  "widget": "text"
+                },
+                {
+                  "name": "LOCATION",
+                  "label": "Населений пункт",
+                  "widget": "string"
+                },
+                {
+                  "name": "WATER",
+                  "label": "Назва водойми",
+                  "widget": "string"
+                }
+              ]
+            },
+            {
+              "name": "CONTACTS",
+              "label": "02 · Контакти",
+              "widget": "object",
+              "collapsed": true,
+              "fields": [
+                {
+                  "name": "PHONE",
+                  "label": "Телефон",
+                  "widget": "string",
+                  "pattern": [
+                    "^\\+?[1-9][0-9 ()-]{7,22}$",
+                    "Міжнародний номер, наприклад +380965227525"
+                  ],
+                  "hint": "Оновиться у шапці, контактах, бронюванні й мобільній панелі."
+                },
+                {
+                  "name": "VIBER",
+                  "label": "Номер Viber",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^\\+?[1-9][0-9 ()-]{7,22}$",
+                    "Міжнародний номер, наприклад +380965227525"
+                  ],
+                  "hint": "Порожньо — використовувати основний телефон."
+                },
+                {
+                  "name": "TELEGRAM",
+                  "label": "Telegram username",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^@?[A-Za-z0-9_]{5,32}$",
+                    "Username без посилання, наприклад @name. Або залиште порожнім."
+                  ],
+                  "hint": "Якщо username немає, залиште порожнім. Тоді відкриватиметься контакт за номером телефону."
+                },
+                {
+                  "name": "EMAIL",
+                  "label": "Email",
+                  "widget": "string",
+                  "required": false,
+                  "pattern": [
+                    "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+                    "Вкажіть коректний email або залиште порожнім."
+                  ],
+                  "hint": "Порожній email повністю прихований на сайті."
+                }
+              ]
+            },
+            {
+              "name": "PRICE",
+              "label": "03 · Ціни",
+              "widget": "object",
+              "collapsed": true,
+              "fields": [
+                {
+                  "name": "WEEKDAY",
+                  "label": "Будні, грн / доба",
+                  "widget": "number",
+                  "value_type": "int",
+                  "min": 0,
+                  "max": 1000000
+                },
+                {
+                  "name": "WEEKEND",
+                  "label": "Вихідні, грн / доба",
+                  "widget": "number",
+                  "value_type": "int",
+                  "min": 0,
+                  "max": 1000000
+                },
+                {
+                  "name": "WEEKEND_MIN_NIGHTS",
+                  "label": "Мінімум ночей у вихідні",
+                  "widget": "number",
+                  "value_type": "int",
+                  "min": 1,
+                  "max": 90
+                },
+                {
+                  "name": "NOTE",
+                  "label": "Додатковий текст біля цін",
+                  "widget": "text",
+                  "required": false
+                }
+              ]
+            },
+            {
+              "name": "HOUSE",
+              "label": "04 · Про будиночки",
+              "widget": "object",
+              "collapsed": true,
+              "fields": [
+                {
+                  "name": "TITLE",
+                  "label": "Заголовок",
+                  "widget": "text",
+                  "hint": "Новий рядок переноситься на сайті. Частину тексту між *зірочками* буде виділено курсивом."
+                },
+                {
+                  "name": "DESCRIPTION",
+                  "label": "Опис",
+                  "widget": "text"
+                },
+                {
+                  "name": "MAIN_PLACES",
+                  "label": "Основні місця",
+                  "widget": "number",
+                  "value_type": "int",
+                  "min": 1,
+                  "max": 50
+                },
+                {
+                  "name": "EXTRA_PLACES",
+                  "label": "Додаткові місця",
+                  "widget": "number",
+                  "value_type": "int",
+                  "min": 0,
+                  "max": 50
+                },
+                {
+                  "name": "EXTRA_NOTE",
+                  "label": "Опис додаткового місця",
+                  "widget": "text",
+                  "required": false
+                },
+                {
+                  "name": "SHARED_NOTE",
+                  "label": "Спільні зручності",
+                  "widget": "text",
+                  "hint": "Текст між **двома зірочками** буде жирним."
+                },
+                {
+                  "name": "AMENITIES",
+                  "label": "Список зручностей",
+                  "widget": "list",
+                  "allow_add": true,
+                  "collapsed": false,
+                  "field": {
+                    "name": "item",
+                    "label": "Зручність",
+                    "widget": "string"
+                  },
+                  "hint": "Додавайте, видаляйте або перетягуйте пункти для зміни порядку."
+                }
+              ]
+            },
+            {
+              "name": "CONDITIONS",
+              "label": "05 · Умови та запитання",
+              "widget": "list",
+              "allow_add": true,
+              "collapsed": true,
+              "summary": "{{fields.title}}",
+              "fields": [
+                {
+                  "name": "title",
+                  "label": "Заголовок",
+                  "widget": "string"
+                },
+                {
+                  "name": "body",
+                  "label": "Пояснення",
+                  "widget": "richtext",
+                  "modes": [
+                    "rich_text"
+                  ],
+                  "buttons": [
+                    "bold",
+                    "italic",
+                    "bulleted-list",
+                    "numbered-list"
+                  ],
+                  "editor_components": [],
+                  "sanitize_preview": true
+                }
+              ],
+              "hint": "Порядок можна змінювати перетягуванням. Кожний пункт з’явиться у секції цін та умов."
+            },
+            {
+              "name": "MAP",
+              "label": "06 · Як дістатися / Карта проїзду",
+              "widget": "object",
+              "collapsed": true,
+              "fields": [
+                {
+                  "name": "TITLE",
+                  "label": "Назва блоку",
+                  "widget": "string"
+                },
+                {
+                  "name": "INTRO",
+                  "label": "Короткий текст",
+                  "widget": "text"
+                },
+                {
+                  "name": "URL",
+                  "label": "Google Maps URL",
+                  "widget": "string",
+                  "pattern": [
+                    "^https://(maps\\.app\\.goo\\.gl|maps\\.google\\.com|www\\.google\\.com|google\\.com)/",
+                    "Потрібне HTTPS-посилання Google Maps."
+                  ],
+                  "hint": "Посилання «Відкрити в Google Maps»."
+                },
+                {
+                  "name": "LAT",
+                  "label": "Широта",
+                  "widget": "number",
+                  "value_type": "float",
+                  "min": -90,
+                  "max": 90,
+                  "step": 1e-06
+                },
+                {
+                  "name": "LNG",
+                  "label": "Довгота",
+                  "widget": "number",
+                  "value_type": "float",
+                  "min": -180,
+                  "max": 180,
+                  "step": 1e-06
+                },
+                {
+                  "name": "INSTRUCTIONS",
+                  "label": "Як дістатися / Інструкція проїзду",
+                  "widget": "richtext",
+                  "modes": [
+                    "rich_text"
+                  ],
+                  "buttons": [
+                    "bold",
+                    "italic",
+                    "bulleted-list",
+                    "numbered-list"
+                  ],
+                  "editor_components": [],
+                  "sanitize_preview": true,
+                  "required": false,
+                  "hint": "Абзаци, жирний текст і списки. Порожнє поле не показується. Не забудьте оновити координати й посилання разом, якщо точка змінилася."
+                },
+                {
+                  "name": "BUTTON_TEXT",
+                  "label": "Текст кнопки маршруту",
+                  "widget": "string"
+                }
+              ]
+            },
+            {
+              "name": "PHOTOS",
+              "label": "07 · Фотографії та галерея",
+              "widget": "object",
+              "collapsed": true,
+              "fields": [
+                {
+                  "name": "HERO",
+                  "label": "Фото першого екрана (Hero)",
+                  "widget": "image",
+                  "choose_url": false,
+                  "media_library": {
+                    "config": {
+                      "multiple": false
+                    }
+                  },
+                  "hint": "Завантажте фото або виберіть наявне у Медіа. JPG, PNG, WebP або AVIF."
+                },
+                {
+                  "name": "HERO_ALT",
+                  "label": "Опис фото Hero",
+                  "widget": "string"
+                },
+                {
+                  "name": "HOUSE",
+                  "label": "Фото у розділі будиночків",
+                  "widget": "image",
+                  "choose_url": false,
+                  "media_library": {
+                    "config": {
+                      "multiple": false
+                    }
+                  },
+                  "hint": "Завантажте фото або виберіть наявне у Медіа. JPG, PNG, WebP або AVIF."
+                },
+                {
+                  "name": "HOUSE_ALT",
+                  "label": "Опис фото будиночків",
+                  "widget": "string"
+                },
+                {
+                  "name": "WATER",
+                  "label": "Фото берега",
+                  "widget": "image",
+                  "choose_url": false,
+                  "media_library": {
+                    "config": {
+                      "multiple": false
+                    }
+                  },
+                  "hint": "Завантажте фото або виберіть наявне у Медіа. JPG, PNG, WebP або AVIF."
+                },
+                {
+                  "name": "WATER_ALT",
+                  "label": "Опис фото берега",
+                  "widget": "string"
+                },
+                {
+                  "name": "GALLERY",
+                  "label": "Галерея",
+                  "widget": "list",
+                  "allow_add": true,
+                  "collapsed": true,
+                  "summary": "{{fields.caption}}",
+                  "fields": [
+                    {
+                      "name": "src",
+                      "label": "Фото",
+                      "widget": "image",
+                      "choose_url": false,
+                      "media_library": {
+                        "config": {
+                          "multiple": false
+                        }
+                      },
+                      "hint": "Завантажте фото або виберіть наявне у Медіа. JPG, PNG, WebP або AVIF."
+                    },
+                    {
+                      "name": "caption",
+                      "label": "Підпис",
+                      "widget": "string"
+                    },
+                    {
+                      "name": "alt",
+                      "label": "Опис для доступності",
+                      "widget": "string",
+                      "required": false
+                    }
+                  ],
+                  "hint": "Перетягніть пункти, щоб змінити порядок. Перші 5 — у сітці; усі — у великому перегляді. Видалення пункту прибере фото з галереї. Файл можна окремо видалити у Медіа, якщо він більше ніде не використовується."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
