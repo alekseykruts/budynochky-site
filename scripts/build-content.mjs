@@ -74,11 +74,15 @@ const raw = {
 };
 let html = read('src/index.template.html').replace(/\{\{([A-Z_0-9]+)\}\}/g, (_, key) => { assert(key in tokens || key in raw, 'Невідоме поле шаблону: ' + key); return key in raw ? raw[key] : escape(tokens[key]); });
 
-// Make the difficult final approach explicit without changing the overall section layout.
-html = html.replace(
-  '<div class="route-instructions"',
-  '<p class="price-note route-alert" role="note"><strong>Важливо:</strong> під’їзд до місця може бути неочевидним — радимо будувати маршрут саме до цієї точки.</p><div class="route-instructions"'
-);
+// Small standalone stylesheet for route guidance improvements.
+html = html.replace('<link rel="stylesheet" href="styles.css">', '<link rel="stylesheet" href="styles.css">\n  <link rel="stylesheet" href="improvements.css">');
+
+// Make the difficult final approach explicit, with a direct link to the exact map point.
+const routeAlert = '<div class="route-alert" role="note"><span class="route-alert-icon" aria-hidden="true"><svg class="icon"><use href="#i-route"/></svg></span><span class="route-alert-copy"><strong>Важливо:</strong> під’їзд до місця може бути неочевидним — радимо будувати маршрут саме до цієї точки.<br><a class="route-alert-link" href="' + escape(m.URL) + '" target="_blank" rel="noopener noreferrer">Відкрити точку в Google Maps ↗</a></span></div>';
+html = html.replace('<p class="price-note route-alert" role="note"><strong>Важливо:</strong> під’їзд до місця може бути неочевидним — радимо будувати маршрут саме до цієї точки.</p>', routeAlert);
+if (!html.includes('class="route-alert"')) {
+  html = html.replace('<div class="route-instructions"', routeAlert + '<div class="route-instructions"');
+}
 
 // Social preview for links shared in Telegram, Viber and other messengers.
 const canonical = process.env.URL || '';
@@ -93,6 +97,32 @@ const socialMeta = [
   '<meta name="twitter:image" content="' + escape(ogImage) + '">'
 ].join('\n  ');
 html = html.replace('</head>', '  ' + socialMeta + '\n</head>');
+
+// Structured data helps search engines understand the lodging, contact and exact location.
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'LodgingBusiness',
+  name: g.NAME,
+  description: tokens.META_DESCRIPTION,
+  telephone: primary,
+  ...(canonical ? { url: canonical } : {}),
+  image: ogImage,
+  hasMap: m.URL,
+  priceRange: money(p.WEEKDAY) + '–' + money(p.WEEKEND) + ' UAH',
+  address: { '@type': 'PostalAddress', addressLocality: g.LOCATION, addressCountry: 'UA' },
+  geo: { '@type': 'GeoCoordinates', latitude: m.LAT, longitude: m.LNG },
+  amenityFeature: h.AMENITIES.map(name => ({ '@type': 'LocationFeatureSpecification', name, value: true }))
+};
+const jsonLd = JSON.stringify(structuredData).replace(/</g, '\\u003c');
+html = html.replace('</head>', '  <script type="application/ld+json">' + jsonLd + '</script>\n</head>');
+
+// Keep the browser-side Telegram fallback consistent with the generated links.
+const legacyTelegramLine = "  const telegram = telegramName ? 'https://t.me/' + encodeURIComponent(telegramName) : 'https://t.me/' + phone;";
+const fixedTelegramLine = "  const telegram = telegramName ? 'https://t.me/' + encodeURIComponent(telegramName) : 'tg://resolve?phone=' + phone.replace(/\\D/g, '');";
+let clientScript = read('dist/script.js');
+assert(clientScript.includes(legacyTelegramLine) || clientScript.includes(fixedTelegramLine), 'Не вдалося знайти Telegram fallback у dist/script.js');
+clientScript = clientScript.replace(legacyTelegramLine, fixedTelegramLine);
+write('dist/script.js', clientScript);
 
 write('dist/index.html', html);
 write('dist/config.js', '// Generated from content/site.json. Edit through /admin.\nwindow.SITE_CONFIG = ' + JSON.stringify(C, null, 2).replace(/</g, '\\u003c') + ';\n');
